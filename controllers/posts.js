@@ -22,10 +22,16 @@ exports.getAllPosts = async (req, res) => {
 exports.createPosts = async (req, res) => {
     //extract data from the body..
 
-    const post = req.body;
+
+    const { creator, title, message, tags, selectedFile } = req.body;
+
+    //some validation required...
+
+    if (!creator || !title || message || tags || selectedFile) return res.status(400).send(`All fields required!`);
+
 
     try {
-        const newPost = await PostMessage.create(post);
+        const newPost = await PostMessage.create({ creator, title, message, tags, selectedFile });
         //send the response now...
         res.status(201).json(newPost)
     } catch (error) {
