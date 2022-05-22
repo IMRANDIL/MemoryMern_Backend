@@ -1,4 +1,4 @@
-const { default: mongoose } = require('mongoose');
+const mongoose = require('mongoose');
 const PostMessage = require('../models/postMessage')
 
 
@@ -46,6 +46,7 @@ exports.updatePosts = async (req, res) => {
     const { id: _id } = req.params;
 
     const post = req.body;
+
     //some validation...
 
     if (!mongoose.Types.ObjectId.isValid(_id)) {
@@ -56,7 +57,7 @@ exports.updatePosts = async (req, res) => {
 
 
     try {
-        const updatedPost = await PostMessage.findByIdAndUpdate(_id, post, { new: true });
+        const updatedPost = await PostMessage.findByIdAndUpdate(_id, { ...post, _id }, { new: true });
 
         //now send the response..
         res.status(200).json(updatedPost);
